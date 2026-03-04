@@ -19,7 +19,7 @@ def chat():
     try:
         # Відправляємо запит до локальної моделі Ollama
         response = requests.post(
-            "http://localhost:11434/api/generate",
+            "url = "http://localhost:11434/api/generate"",
             json={
                 "model": "karolinka",  # Назва моделі
                 "prompt": user_message,
