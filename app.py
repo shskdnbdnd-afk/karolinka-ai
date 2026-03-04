@@ -18,8 +18,8 @@ def chat():
 
     try:
         # Відправляємо запит до локальної моделі Ollama
-       response = requests.post(
-    "https://lemony-luke-unabating.ngrok-free.dev/api/generate",
+      response = requests.post(
+    "https://your-ngrok-url.ngrok-free.dev/api/generate",
     json={
         "model": "karolinka",
         "prompt": user_message,
