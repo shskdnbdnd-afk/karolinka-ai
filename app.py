@@ -18,19 +18,19 @@ def chat():
 
     try:
         # Відправляємо запит до локальної моделі Ollama
-        response = requests.post(
-            "url = "http://localhost:11434/api/generate"",
-            json={
-                "model": "karolinka",  # Назва моделі
-                "prompt": user_message,
-                "stream": False,
-                "options": {
-                    "temperature": 0.8,
-                    "repeat_penalty": 1.1
-                }
-            },
-            timeout=60
-        )
+       response = requests.post(
+    "https://lemony-luke-unabating.ngrok-free.dev/api/generate",
+    json={
+        "model": "karolinka",
+        "prompt": user_message,
+        "stream": False,
+        "options": {
+            "temperature": 0.8,
+            "repeat_penalty": 1.1
+        }
+    },
+    timeout=60
+)
         response.raise_for_status()
         bot_response = response.json().get("response", "Karolinka не може відповісти зараз 😔")
     except requests.exceptions.RequestException as e:
