@@ -8,6 +8,7 @@ app = Flask(__name__)
 def index():
     return render_template("index.html")
 
+
 # API для чат-бота Karolinka
 @app.route("/api/chat", methods=["POST"])
 def chat():
@@ -17,22 +18,27 @@ def chat():
         return jsonify({"response": "Будь ласка, введіть повідомлення 😊"}), 400
 
     try:
-        # Відправляємо запит до локальної моделі Ollama
-      response = requests.post(
-    "https://your-ngrok-url.ngrok-free.dev/api/generate",
-    json={
-        "model": "karolinka",
-        "prompt": user_message,
-        "stream": False,
-        "options": {
-            "temperature": 0.8,
-            "repeat_penalty": 1.1
-        }
-    },
-    timeout=60
-)
+        # Запит до Ollama через ngrok
+        response = requests.post(
+            "https://lemony-luke-unabating.ngrok-free.dev/api/generate",
+            json={
+                "model": "karolinka",
+                "prompt": user_message,
+                "stream": False,
+                "options": {
+                    "temperature": 0.8,
+                    "repeat_penalty": 1.1
+                }
+            },
+            timeout=60
+        )
+
         response.raise_for_status()
-        bot_response = response.json().get("response", "Karolinka не може відповісти зараз 😔")
+        bot_response = response.json().get(
+            "response",
+            "Karolinka не може відповісти зараз 😔"
+        )
+
     except requests.exceptions.RequestException as e:
         bot_response = f"Помилка з'єднання з AI: {str(e)}"
     except Exception as e:
@@ -40,5 +46,6 @@ def chat():
 
     return jsonify({"response": bot_response})
 
+
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5050, debug=True)
+    app.run(host="0.0.0.0", port=5050)
