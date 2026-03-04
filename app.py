@@ -1,51 +1,36 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify
 import requests
 
 app = Flask(__name__)
 
-# Головна сторінка
+OLLAMA_URL = "http://localhost:11434/api/generate"
+
 @app.route("/")
-def index():
-    return render_template("index.html")
+def home():
+    return "Karolinka API is running"
 
-
-# API для чат-бота Karolinka
-@app.route("/api/chat", methods=["POST"])
-def chat():
-    user_message = request.json.get("message", "")
-
-    if not user_message.strip():
-        return jsonify({"response": "Будь ласка, введіть повідомлення 😊"}), 400
-
+@app.route("/api/generate", methods=["POST"])
+def generate():
     try:
-        # Запит до Ollama через ngrok
+        data = request.json
+
+        prompt = data.get("prompt", "")
+        model = data.get("model", "karolinka")
+
         response = requests.post(
-            "https://lemony-luke-unabating.ngrok-free.dev/api/generate",
+            OLLAMA_URL,
             json={
-                "model": "karolinka",
-                "prompt": user_message,
-                "stream": False,
-                "options": {
-                    "temperature": 0.8,
-                    "repeat_penalty": 1.1
-                }
-            },
-            timeout=60
+                "model": model,
+                "prompt": prompt,
+                "stream": False
+            }
         )
 
-        response.raise_for_status()
-        bot_response = response.json().get(
-            "response",
-            "Karolinka не може відповісти зараз 😔"
-        )
+        return jsonify(response.json())
 
-    except requests.exceptions.RequestException as e:
-        bot_response = f"Помилка з'єднання з AI: {str(e)}"
     except Exception as e:
-        bot_response = f"Невідома помилка: {str(e)}"
-
-    return jsonify({"response": bot_response})
+        return jsonify({"error": str(e)}), 500
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5050)
+    app.run(host="0.0.0.0", port=5050, debug=True)
