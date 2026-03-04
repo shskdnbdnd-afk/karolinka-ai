@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karolinka AI</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="logo-container">
+                <img src="{{ url_for('static', filename='images/karolinka-logo.png') }}" alt="Karolinka Logo" class="logo">
+                <h1>Karolinka</h1>
+            </div>
+            <p class="subtitle">Твій персональний AI-асистент</p>
+        </header>
+
+        <!-- Chat Container -->
+        <div class="chat-container" id="chatContainer">
+            <div class="messages-container" id="messagesContainer">
+                <!-- Привітальне повідомлення -->
+                <div class="message bot-message">
+                    <div class="message-content">
+                        <div class="message-sender">Karolinka</div>
+                        <div class="message-text">Привіт! Я Karolinka, твій розумний асистент. Як я можу допомогти? 😊</div>
+                        <div class="message-time" id="welcomeTime">Зараз</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Input Area -->
+        <div class="input-area">
+            <div class="input-wrapper">
+                <input
+                    type="text"
+                    id="userInput"
+                    class="message-input"
+                    placeholder="Введіть своє повідомлення..."
+                    autocomplete="off"
+                >
+                <button id="sendButton" class="send-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="22" y1="2" x2="11" y2="13"></line>
+                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                    </svg>
+                </button>
+            </div>
+            <p class="input-hint">Karolinka відповість на будь-яке запитання без обмежень</p>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script>
+        // Оновлюємо час у привітальному повідомленні
+        document.getElementById('welcomeTime').textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    </script>
+</body>
+</html>
